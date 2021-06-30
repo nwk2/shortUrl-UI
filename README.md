@@ -7,6 +7,12 @@
   Gatsby minimal starter
 </h1>
 
+## 📝 TODO
+- [ ] component styling, layout, design
+- [ ] call Go API, integrate
+- [ ] dockerise app
+- [ ] deploy to heroku or similar
+
 ## 🚀 Quick start
 
 1.  **Create a Gatsby site.**
