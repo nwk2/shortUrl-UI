@@ -2,32 +2,37 @@ import React from 'react'
 import {
   FormControl,
   FormHelperText,
+  InputGroup,
   Input,
-  Button,
-  Stack
-} from "@chakra-ui/react"
+  InputRightElement,
+  Button
+} from '@chakra-ui/react'
 
-const ShortUrlForm = ({ originalUrl, setOriginalUrl, handleSubmit}) => {
+const ShortUrlForm = ({ originalUrl, setOriginalUrl, handleSubmit, isLoading}) => {
   const isSubmitDisabled = () => {
     return originalUrl ? false : true
   }
 
   return (
     <FormControl isRequired>
-      {/* <FormLabel>Original URL</FormLabel> */}
-      <Stack direction="row">
+      <InputGroup size="md">
         <Input
-          type="url"
+          pr="6rem"
           value={originalUrl}
           onChange={(e) => setOriginalUrl(e.target.value) } />
-        <Button
-          colorScheme="teal"
-          variant="solid"
-          onClick={handleSubmit}
-          isDisabled={isSubmitDisabled()}>
-            Shorten!
-        </Button>
-      </Stack>
+          <InputRightElement width="6rem">
+            <Button
+              h="1.75rem"
+              size="sm"
+              colorScheme="teal"
+              variant="solid"
+              onClick={handleSubmit}
+              isDisabled={isSubmitDisabled()}
+              isLoading={isLoading}>
+              Shorten
+            </Button>
+          </InputRightElement>
+      </InputGroup>
       <FormHelperText>Input link to generate shortened URL</FormHelperText>
     </FormControl>
   )

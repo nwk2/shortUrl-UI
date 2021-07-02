@@ -1,7 +1,20 @@
 import React, { useState } from 'react'
 import Layout from '../components/layout'
 import ShortUrlForm from '../components/shortUrlForm'
-import { Box, StatGroup, Stat, StatLabel, StatNumber, Button, Stack } from '@chakra-ui/react'
+import {
+  Box,
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  Td,
+  Link,
+  Flex,
+  Button,
+  useClipboard
+} from '@chakra-ui/react'
+import { ExternalLinkIcon } from '@chakra-ui/icons'
 
 import useShortUrl from '../hooks/useShortUrl'
 
@@ -9,12 +22,19 @@ import useShortUrl from '../hooks/useShortUrl'
 const IndexPage = () => {
   const [originalUrl, setOriginalUrl] = useState('')
   const [shortUrl, setShortUrl] = useState(null)
+  const [isLoading, setIsLoading] = useState(false)
   const { createShortUrl } = useShortUrl()
+
+  const [value, setValue] = React.useState(null)
+  const { hasCopied, onCopy } = useClipboard(value)
 
   const handleSubmit = async () => {
     console.log('submitted value: ', originalUrl)
+    setIsLoading(true)
     const shortUrl = await createShortUrl(originalUrl)
+    setIsLoading(false)
     setShortUrl(shortUrl)
+    setValue(shortUrl.shortUrl)
     console.log(shortUrl)
   }
 
@@ -23,28 +43,40 @@ const IndexPage = () => {
       <ShortUrlForm
         originalUrl={originalUrl}
         setOriginalUrl={setOriginalUrl}
-        handleSubmit={handleSubmit} />
+        handleSubmit={handleSubmit}
+        isLoading={isLoading} />
       {/* TODO: extract below into separate component, pass shortUrl into it as prop */}
       {shortUrl &&
       <Box borderWidth="1px" borderRadius="lg">
-        <Stack direction="row">
-        <StatGroup>
-          <Stat>
-            <StatLabel>shortUrl</StatLabel>
-            <StatNumber>localhost:8080/redirect/some-generated-hash-key</StatNumber>
-          </Stat>
-          <Stat>
-            <StatLabel>expiryDate</StatLabel>
-            <StatNumber>some time stamp</StatNumber>
-          </Stat>
-        </StatGroup>
-        <Button 
-          colorScheme="teal"
-          size="xs"
-          onClick={() => {navigator.clipboard.writeText('some text from state')}}>
-          Copy
-        </Button>
-        </Stack>
+        <Table size="sm">
+          <Thead>
+            <Tr>
+              <Th>shortened url</Th>
+              <Th>expiry date</Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            <Tr>
+              <Td>
+                <Flex>
+                  <Link href={shortUrl.shortUrl} isExternal>
+                    {shortUrl.shortUrl} <ExternalLinkIcon mx="2px" />
+                  </Link>
+                  <Button
+                    h="2rem"
+                    size="sm"
+                    colorScheme="teal"
+                    variant="ghost"
+                    onClick={onCopy}
+                    ml={2}>
+                    {hasCopied ? "Copied" : "Copy"}
+                  </Button>
+                </Flex>
+              </Td>
+              <Td>{shortUrl.expiryDate}</Td>
+            </Tr>
+          </Tbody>
+        </Table>
       </Box>
       }
     </Layout>

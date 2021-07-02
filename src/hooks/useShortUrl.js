@@ -1,29 +1,15 @@
-import { useCallback, useState } from "react"
+import { useCallback } from "react"
+import axios from "axios"
 
 export default function useShortUrl() {
-  const [isLoading, setIsLoading] = useState(false)
 
   const createShortUrl = useCallback(async (originalUrl) => {
-    setIsLoading(true)
-    // const requestUrl = ''
     try {
-      const mockResponse = {
-        "shortUrl": `localhost:8080/redirect/some-generated-hash-key`,
-        "expiryDate": "string"
-      }
-      // const mockResponse = {
-      //   "id": 0,
-      //   "shortUrl": `localhost:8080/redirect/some-generated-hash-key`,
-      //   "originalUrl": originalUrl,
-      //   "hashKey": 'some-generated-hash-key',
-      //   "createdDate": "createdDateTS",
-      //   "expiryDate": "expiryDateTS"
-      // }
-      return mockResponse
+      const res = await axios.post(`https://test-go-app-url.herokuapp.com/shortUrls`, { "originalUrl": originalUrl })
+      return res.data
     } catch (err) {
       console.log(err)
     }
-    setIsLoading(false)
   }, [])
 
   return { createShortUrl }
