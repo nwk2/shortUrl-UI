@@ -9,7 +9,7 @@
 
 ## 📝 TODO
 - [ ] component styling, layout, design
-- [ ] call Go API, integrate
+- [x] call Go API, integrate (POST /short-urls, base URL via GATSBY_API_URL)
 - [ ] dockerise app
 - [ ] deploy to heroku or similar
 
