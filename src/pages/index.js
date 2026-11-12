@@ -22,6 +22,7 @@ import useShortUrl from '../hooks/useShortUrl'
 // TODO: Styling of this page. Padding margin etc
 const IndexPage = () => {
   const [originalUrl, setOriginalUrl] = useState('')
+  const [expiryDate, setExpiryDate] = useState('')
   const [shortUrl, setShortUrl] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(null)
@@ -35,7 +36,7 @@ const IndexPage = () => {
     setIsLoading(true)
     setError(null)
     try {
-      const shortUrl = await createShortUrl(originalUrl)
+      const shortUrl = await createShortUrl(originalUrl, expiryDate)
       setShortUrl(shortUrl)
       setValue(shortUrl && shortUrl.short_url)
       console.log(shortUrl)
@@ -54,6 +55,8 @@ const IndexPage = () => {
       <ShortUrlForm
         originalUrl={originalUrl}
         setOriginalUrl={setOriginalUrl}
+        expiryDate={expiryDate}
+        setExpiryDate={setExpiryDate}
         handleSubmit={handleSubmit}
         isLoading={isLoading} />
       {/* TODO: extract below into separate component, pass shortUrl into it as prop */}
