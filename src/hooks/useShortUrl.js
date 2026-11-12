@@ -7,8 +7,13 @@ const API_BASE_URL = process.env.GATSBY_API_URL || "http://localhost:8080"
 
 export default function useShortUrl() {
 
-  const createShortUrl = useCallback(async (originalUrl) => {
-    const res = await axios.post(`${API_BASE_URL}/short-urls`, { "original_url": originalUrl })
+  const createShortUrl = useCallback(async (originalUrl, expiryDate) => {
+    const body = { "original_url": originalUrl }
+    if (expiryDate) {
+      // datetime-local gives "YYYY-MM-DDTHH:MM"; backend expects "YYYY-MM-DD HH:MM".
+      body["expiry_date"] = expiryDate.replace("T", " ")
+    }
+    const res = await axios.post(`${API_BASE_URL}/short-urls`, body)
     return res.data
   }, [])
 
