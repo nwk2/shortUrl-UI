@@ -8,7 +8,7 @@ import {
   Button
 } from '@chakra-ui/react'
 
-const ShortUrlForm = ({ originalUrl, setOriginalUrl, handleSubmit, isLoading}) => {
+const ShortUrlForm = ({ originalUrl, setOriginalUrl, expiryDate, setExpiryDate, handleSubmit, isLoading}) => {
   const isSubmitDisabled = () => {
     return originalUrl ? false : true
   }
@@ -34,6 +34,12 @@ const ShortUrlForm = ({ originalUrl, setOriginalUrl, handleSubmit, isLoading}) =
           </InputRightElement>
       </InputGroup>
       <FormHelperText>Input link to generate shortened URL</FormHelperText>
+      <Input
+        type="datetime-local"
+        value={expiryDate}
+        onChange={(e) => setExpiryDate(e.target.value) }
+        mt={2} />
+      <FormHelperText>Optional expiry date (defaults to 30 days)</FormHelperText>
     </FormControl>
   )
 }
