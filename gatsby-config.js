@@ -4,6 +4,5 @@ module.exports = {
   },
   plugins: [
     "gatsby-plugin-styled-components",
-    "@chakra-ui/gatsby-plugin"
   ],
 };
